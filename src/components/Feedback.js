@@ -24,7 +24,7 @@ const Feedback = () => {
     setSuccess("");
 
     try {
-      const res = await fetch("http://localhost:5000/feedback", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: msg, email: user?.email }),
@@ -32,11 +32,11 @@ const Feedback = () => {
 
       if (res.ok) {
         setSuccess(
-          "✅ Thank you for your feedback! , We will work on your feedback"
+          "Thank you for your feedback! , We will work on your feedback"
         );
         setMsg("");
       } else {
-        setSuccess("❌ Something went wrong. Try again.");
+        setSuccess(" Something went wrong. Try again.");
       }
     } catch (error) {
       console.error(error);
