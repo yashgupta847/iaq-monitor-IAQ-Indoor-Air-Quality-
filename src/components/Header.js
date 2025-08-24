@@ -27,23 +27,23 @@ const Header = () => {
         position: "sticky",
         top: 0,
         zIndex: 1000,
-        display: "flex",
-        flexDirection: "column",
+        width: "100%",
         background: isScrolled
           ? "rgba(136, 135, 135, 0.9)"
           : "rgba(40, 40, 40, 1)",
         transition: "background 0.3s ease",
       }}
     >
+      {/* Top bar */}
       <div
         style={{
-          width: "100%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           padding: "10px 20px",
         }}
       >
+        {/* Logo */}
         <div style={{ fontWeight: "bold", fontSize: "20px" }}>
           <img
             style={{ height: "50px", width: "auto" }}
@@ -52,150 +52,187 @@ const Header = () => {
           />
         </div>
 
-        {/* Mobile menu button */}
+        {/* Hamburger for mobile */}
         <button
-          className="mobile-menu-button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           style={{
-            display: "none",
+            fontSize: "24px",
             background: "transparent",
             border: "none",
-            cursor: "pointer",
             color: "#fff",
-            fontSize: "24px",
+            cursor: "pointer",
+            display: "none", // show only on mobile via media query
           }}
+          className="hamburger"
         >
           ☰
         </button>
 
+        {/* Desktop Nav */}
         <nav
+          className="nav-desktop"
           style={{
             display: "flex",
             alignItems: "center",
             gap: "15px",
           }}
         >
-          {/* Desktop Links */}
-          <div className="nav-links" style={{ display: "flex", gap: "15px" }}>
-            <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
-              Home
-            </Link>
-            <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>
-              Dashboard
-            </Link>
-            <Link to="/feedback" style={{ color: "#fff", textDecoration: "none" }}>
-              Feedback
-            </Link>
+          <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+            Home
+          </Link>
+          <Link
+            to="/dashboard"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/feedback"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
+            Feedback
+          </Link>
 
-            {isAuthenticated ? (
-              <div style={{ position: "relative" }}>
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  style={{
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                    border: "none",
-                    borderRadius: "5px",
-                    color: "#fff",
-                    background: "transparent",
-                  }}
-                >
-                  <img
-                    style={{ height: "20px" }}
-                    src="https://cdn-icons-png.flaticon.com/128/456/456212.png"
-                    alt="User"
-                  />
-                </button>
-
-                {dropdownOpen && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "35px",
-                      right: 0,
-                      backgroundColor: "#fff",
-                      border: "1px solid #ccc",
-                      borderRadius: "5px",
-                      minWidth: "160px",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                      zIndex: 1000,
-                    }}
-                  >
-                    <p style={{ padding: "10px", margin: 0, color: "black" }}>
-                      {user?.name || user?.email}
-                    </p>
-                    <button
-                      onClick={handleLogout}
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        border: "none",
-                        backgroundColor: "#ff4d4d",
-                        color: "#fff",
-                        cursor: "pointer",
-                        borderRadius: "0 0 5px 5px",
-                      }}
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
+          {isAuthenticated ? (
+            <div style={{ position: "relative" }}>
               <button
-                onClick={() => loginWithRedirect()}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
                 style={{
-                  padding: "5px 10px",
+                  padding: "5px",
                   cursor: "pointer",
                   border: "none",
-                  borderRadius: "5px",
-                  backgroundColor: "#ff4d4d",
-                  color: "#fff",
+                  background: "transparent",
                 }}
               >
-                Login/Signup
+                <img
+                  style={{ height: "25px", borderRadius: "50%" }}
+                  src="https://cdn-icons-png.flaticon.com/128/456/456212.png"
+                  alt="User"
+                />
               </button>
-            )}
-          </div>
+
+              {dropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "35px",
+                    right: 0,
+                    backgroundColor: "#fff",
+                    color: "#000",
+                    borderRadius: "5px",
+                    minWidth: "160px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                    zIndex: 1000,
+                  }}
+                >
+                  <p style={{ padding: "10px", margin: 0 }}>
+                    {user?.name || user?.email}
+                  </p>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      border: "none",
+                      backgroundColor: "#ff4d4d",
+                      color: "#fff",
+                      cursor: "pointer",
+                      borderRadius: "0 0 5px 5px",
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => loginWithRedirect()}
+              style={{
+                padding: "5px 10px",
+                cursor: "pointer",
+                border: "none",
+                borderRadius: "5px",
+                backgroundColor: "#ff4d4d",
+                color: "#fff",
+              }}
+            >
+              Login/Signup
+            </button>
+          )}
         </nav>
       </div>
 
-      {/* Mobile menu links */}
+      {/* Mobile Nav */}
       {mobileMenuOpen && (
         <div
-          className="mobile-nav"
           style={{
             display: "flex",
             flexDirection: "column",
+            gap: "10px",
             padding: "10px 20px",
             background: "#282828",
+            color: "#fff",
           }}
+          className="nav-mobile"
         >
-          <Link to="/" style={{ color: "#fff", textDecoration: "none", margin: "5px 0" }}>
+          <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
             Home
           </Link>
-          <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none", margin: "5px 0" }}>
+          <Link
+            to="/dashboard"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
             Dashboard
           </Link>
-          <Link to="/feedback" style={{ color: "#fff", textDecoration: "none", margin: "5px 0" }}>
+          <Link
+            to="/feedback"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
             Feedback
           </Link>
+          {isAuthenticated ? (
+            <>
+              <p>{user?.name || user?.email}</p>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: "10px",
+                  border: "none",
+                  backgroundColor: "#ff4d4d",
+                  color: "#fff",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => loginWithRedirect()}
+              style={{
+                padding: "10px",
+                border: "none",
+                backgroundColor: "#ff4d4d",
+                color: "#fff",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              Login/Signup
+            </button>
+          )}
         </div>
       )}
 
-      {/* Inline CSS Media Queries */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            .nav-links {
-              display: none;
-            }
-            .mobile-menu-button {
-              display: block;
-            }
-          }
-        `}
-      </style>
+      {/* Media Queries */}
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-desktop { display: none; }
+          .hamburger { display: block; }
+        }
+      `}</style>
     </header>
   );
 };
